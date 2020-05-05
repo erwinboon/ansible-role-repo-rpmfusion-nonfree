@@ -1,0 +1,7 @@
+---
+rpmfusion_nonfree_repo_url: "https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+rpmfusion_nonfree_repo_gpg_key_url: "etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-el-{{ ansible_distribution_major_version }}"
+rpmfusion_nonfree_repofile_path: "/etc/yum.repos.d/rpmfusion-nonfree.repo"
+rpmfusion_nonfree_repo_disabled: true
+rpmfusion_nonfree_repo_remove: true
+rpmfusion_nonfree_repo_name: "RPMFusion-NONfree repository"

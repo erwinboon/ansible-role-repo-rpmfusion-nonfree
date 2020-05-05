@@ -1,0 +1,41 @@
+---
+- name: Is {{ rpmfusion_nonfree_repo_name }} already installed
+  stat:
+    path: "{{ rpmfusion_nonfree_repo_file }}"
+  register: rpmfusion_nonfree_repo_file_exists
+
+- name: Install {{ rpmfusion_nonfree_repo_name }} repo file
+  yum:
+    name: "{{ rpmfusion_nonfree_repo_url }}"
+    state: present
+  when: not rpmfusion_nonfree_repo_file_exists.stat.exists
+  until: result is succeeded
+  notify:
+    - yum update cache
+
+- name: Install {{ rpmfusion_nonfree_repo_name }} GPG key.
+  rpm_key:
+    key: "{{ rpmfusion_nonfree_repo_gpg_key_url }}"
+    state: present
+  when: not rpmfusion_nonfree_repo_file_exists.stat.exists
+  ignore_errors: "{{ ansible_check_mode }}"
+  notify:
+    - yum update cache
+
+- name: Disable {{ rpmfusion_nonfree_repo_name }} repo.
+  ini_file:
+    path: "{{ rpmfusion_nonfree_repo_file }}"
+    section: rpmfusion-nonfree-updates
+    option: enabled
+    value: 0
+  notify:
+    - yum update cache
+  when: rpmfusion_nonfree_repo_disabled
+
+- name: Remove {{ rpmfusion_nonfree_repo_name }}
+  yum:
+    name: "rpmfusion-nonfree*"
+    state: absent
+  notify:
+    - yum update cache
+  when: rpmfusion_nonfree_repo_remove
