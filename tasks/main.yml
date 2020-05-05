@@ -9,7 +9,6 @@
     name: "{{ rpmfusion_nonfree_repo_url }}"
     state: present
   when: not rpmfusion_nonfree_repo_file_exists.stat.exists
-  until: result is succeeded
   notify:
     - yum update cache
 
