@@ -27,10 +27,10 @@
     path: "{{ rpmfusion_nonfree_repo_file }}"
     section: rpmfusion-nonfree-updates
     option: enabled
-    value: 0
+    value: "0"
   notify:
     - yum update cache
-  when: rpmfusion_nonfree_repo_disabled
+  when: rpmfusion_nonfree_repo_disabled|bool
 
 - name: Remove {{ rpmfusion_nonfree_repo_name }}
   yum:
@@ -38,4 +38,4 @@
     state: absent
   notify:
     - yum update cache
-  when: rpmfusion_nonfree_repo_remove
+  when: rpmfusion_nonfree_repo_remove|bool
